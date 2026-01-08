@@ -1,5 +1,5 @@
 # APU-Installation-HomeAssistant-Freedombox
-Manual for the Installation of Home-Assistant or Freedombox on PCEngines APU3 board. 
+Manual for the Installation of Home-Assistant or Freedombox on PCEngines APU3 board. The manual is available in docs (Installation_on_PCEngines_APU3.md).
 
 # Methods
 Two methods are described: 
