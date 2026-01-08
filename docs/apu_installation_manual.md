@@ -223,6 +223,9 @@ Use Dasharo Tools Suite (documentation at [https://docs.dasharo.com/dasharo-tool
 
 Releases for APU are listed at [https://docs.dasharo.com/variants/pc_engines/releases_uefi/](https://docs.dasharo.com/variants/pc_engines/releases_uefi/) (latest: v0.9.1, Nov 2025). No prebuilt ROMs available.
 
+The built APU3 UEFI firmware ROM is available in the repository ([`firmware/pcengines_apu3_v0.9.rom`](https://github.com/huubsch/APU-Installation-HomeAssistant-Freedombox/blob/main/firmware/pcengines_apu3_v0.9.rom)) and as a GitHub Release asset ([v0.9.1 Release](https://github.com/huubsch/APU-Installation-HomeAssistant-Freedombox/releases/tag/v0.9.1)). Large system images, including the built DTS image, ISO, and WIC files, are provided only via the GitHub Release. Always verify downloads using the included SHA256 checksums.
+
+
 ### 2. Building DTS
 
 1. Install Docker:
