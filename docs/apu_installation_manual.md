@@ -41,10 +41,14 @@ The PC Engines APU uses a legacy BIOS (MBR-based, no UEFI). Neither the Home Ass
 
 *Why microSD is recommended:*
 
+* Can be used to install on mSATA. We had no luck with installing on mSATA from USB stick (!) 
 * Reliable boot from APU BIOS
 * Can remain inserted after installation
-* Easy file transfer and backups
-* No USB port permanently occupied
+
+*Work around for using a USB stick:*
+
+If you cannot mount the microSD card on the laptop/PC you can use a USB stick to install on a microSD card installed in the APU, boot the APU from the microSD card and install subsequently on the mSATA disk.
+
 
 #### 1.2 Hardware Preparation
 
@@ -59,10 +63,12 @@ sudo minicom -D /dev/ttyUSB0
 
 #### 1.3 Booting the Alpine Installer
 
-1. Insert prepared microSD or USB
-2. Power on the APU
-3. Press F10 at BIOS prompt to select boot device
-4. At the `boot:` prompt, quickly type `/` to interrupt default boot
+1. Insert prepared microSD card
+2. Attach network cable to eth0 (port next to serial connector)
+3. Power on the APU
+4. Press F10 at BIOS prompt to select boot device
+5. At or before the `boot:` prompt, quickly type `/` to interrupt default boot
+6. Type the boot message (only one slash up front)
 
 ```
 /boot/vmlinuz-lts modules=loop,squashfs,sd-mod,usb-storage nomodeset console=ttyS0,115200 initrd=/boot/initramfs-lts
@@ -77,14 +83,27 @@ sudo minicom -D /dev/ttyUSB0
 setup-alpine
 ```
 
-* Follow prompts and install Alpine to mSATA
+* Follow prompts and install Alpine to mSATA (usually sda)
+* Choose a mirror from the list (do not use the 'random' otion as this may fail)
+* Install 'sys' type
+* Add user (recommended for SSH login)
+* Reboot (remove microSD) and interrupt to enable serial console (as above)
+* Login as root
 * Identify disks:
 
 ```
-lsblk
+fdisk -l
 ```
+* For later ssh login (recommended), check ip address of active interface:
 
-#### 1.5 Enabling Persistent Serial Console
+```
+ifconfig
+```
+* To enable root SSH-login edit the sshd_config in /etc/ssh by adding <PermitRootLogin yes>
+* After reboot you can login over the network with SSH and remove the serial connection.
+
+
+#### 1.5 Enabling Serial Console  (NOTE: this procedure should be checked!!)
 
 1. Edit `/boot/extlinux.conf`:
 
@@ -98,9 +117,10 @@ console=ttyS0,115200
 2. Make configuration persistent by editing `/etc/update-extlinux.conf`:
 
 ```
+default_kernel_opts="console=ttyS0,115200"
 serial_port=0
 serial_baud=115200
-default_kernel_opts="console=ttyS0,115200"
+
 ```
 
 * Apply changes:
@@ -110,7 +130,7 @@ update-extlinux
 cat /boot/extlinux.conf
 ```
 
-* Reboot; system now boots with serial console output
+* Reboot; system should now boot with serial console enabled
 
 ### 2. Base System Configuration
 
